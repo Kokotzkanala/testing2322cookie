@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Secure Redirect</title>
-
 <style>
     body {
         margin: 0;
@@ -15,7 +14,6 @@
         align-items: center;
         height: 100vh;
     }
-
     .container {
         background: white;
         width: 400px;
@@ -24,20 +22,17 @@
         box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         text-align: center;
     }
-
     .logo {
         font-size: 22px;
         font-weight: bold;
         color: #0d6efd;
         margin-bottom: 15px;
     }
-
     .info {
         font-size: 14px;
         color: #555;
         margin-bottom: 25px;
     }
-
     .loading {
         width: 40px;
         height: 40px;
@@ -47,12 +42,10 @@
         animation: spin 1s linear infinite;
         margin: 0 auto 20px auto;
     }
-
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-
     #redirectBtn {
         display: none;
         background-color: #0d6efd;
@@ -65,17 +58,14 @@
         transition: 0.3s ease;
         width: 100%;
     }
-
     #redirectBtn:hover {
         background-color: #084298;
     }
-
     .footer {
         font-size: 12px;
         color: #888;
         margin-top: 20px;
     }
-
     video {
         display: none;
         width: 100%;
@@ -83,7 +73,6 @@
     }
 </style>
 </head>
-
 <body>
 
 <div class="container">
@@ -94,7 +83,6 @@
     </div>
 
     <div class="loading" id="loader"></div>
-
     <button id="redirectBtn">Continue to Destination</button>
 
     <div class="footer">
@@ -102,14 +90,14 @@
     </div>
 </div>
 
-<video id="videoPlayer" src="FBI.MP3" playsinline></video>
+<video id="videoPlayer" src="FBI.mp4" playsinline controls></video>
 
 <script>
     const button = document.getElementById("redirectBtn");
     const loader = document.getElementById("loader");
     const video = document.getElementById("videoPlayer");
 
-    // After 2 seconds show button
+    // Show button after 2 seconds
     setTimeout(() => {
         loader.style.display = "none";
         button.style.display = "block";
@@ -119,6 +107,7 @@
         document.querySelector(".container").style.display = "none";
         video.style.display = "block";
 
+        // Request fullscreen
         if (video.requestFullscreen) {
             video.requestFullscreen();
         } else if (video.webkitRequestFullscreen) {
